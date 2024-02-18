@@ -5,6 +5,7 @@ import styles from '@/components/style.module.css';
 import Image from 'next/image';
 import { Plane } from '../../assets';
 import { io } from 'socket.io-client';
+const socket = io('https://blinkchat-wekq.onrender.com');
 
 const Chat = () => {
     const sendRef = useRef(null)
@@ -14,8 +15,6 @@ const Chat = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const socket = io('https://blinkchat-wekq.onrender.com');
-        console.log(navigator.onLine);
         socket.on('connect', () => {
             console.log(socket.id);
         });
