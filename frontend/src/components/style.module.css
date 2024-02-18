@@ -1,0 +1,42 @@
+.fontFamily{
+    font-family: "Caesar Dressing", system-ui;
+}
+
+.input {
+    border-radius: 50px;
+    border: 1px solid #a0a0a0;
+    background: transparent;
+    color: #fff;
+    height: 55px;
+    padding: 0 30px;
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+
+.input:focus {
+    outline: 2px solid #1976d2;
+    border: none;
+}
+.input::-webkit-scrollbar {
+    display: none;
+}
+
+.conversation {
+    overflow-y:scroll;
+    width: 100%;
+    height:100%;
+    justify-content: flex-end;
+    padding: 0 10px;
+}
+.conversation::-webkit-scrollbar {
+    width: 7px; /* width of the scrollbar */
+}
+
+.conversation::-webkit-scrollbar-thumb {
+    background-color: #a0a0a0; /* color of the scrollbar thumb */
+    border-radius: 6px; /* roundness of the scrollbar thumb */
+}
+
+.conversation::-webkit-scrollbar-track {
+    background-color: #000; /* color of the scrollbar track */
+}
