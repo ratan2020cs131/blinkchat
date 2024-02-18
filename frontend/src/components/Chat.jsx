@@ -14,7 +14,7 @@ const Chat = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const socket = io('http://localhost:5000');
+        const socket = io('https://blinkchat-wekq.onrender.com');
         console.log(navigator.onLine);
         socket.on('connect', () => {
             console.log(socket.id);
