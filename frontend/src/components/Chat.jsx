@@ -5,7 +5,6 @@ import styles from '@/components/style.module.css';
 import Image from 'next/image';
 import { Plane } from '../../assets';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:5000');
 
 const Chat = () => {
     const sendRef = useRef(null)
@@ -15,11 +14,8 @@ const Chat = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        socket.on('recieve-message', (message, id) => {
-            console.log("received: ", message);
-            setChats(prev => [...prev, { id: id, message }]);
-        });
-
+        const socket = io('http://localhost:5000');
+        console.log(navigator.onLine);
         socket.on('connect', () => {
             console.log(socket.id);
         });
@@ -27,6 +23,11 @@ const Chat = () => {
         const url = window.location.href;
         setRoom(url.split('/').pop());
         socket.emit('join-room', url.split('/').pop());
+
+        socket.on('recieve-message', (message, id) => {
+            console.log("received: ", message);
+            setChats(prev => [...prev, { id: id, message }]);
+        });
 
         return () => {
             socket.off('recieve-message');
@@ -44,8 +45,8 @@ const Chat = () => {
     };
 
     const handleMessage = (e) => {
-        if(e.target.value[0]==='\n'){setMessage('')}
-        else {setMessage(e.target.value)}
+        if (e.target.value[0] === '\n') { setMessage('') }
+        else { setMessage(e.target.value) }
     }
 
 
