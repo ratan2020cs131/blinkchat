@@ -5,6 +5,7 @@ import http from 'http'
 import { Server } from 'socket.io';
 dotenv.config({ path: './.env' })
 import './database/connect.js';
+import routes from './routes/index.js';
 
 
 const app = express();
@@ -16,8 +17,7 @@ app.use(express.urlencoded({ limit: '8mb', extended: true }));
 app.use(cors({ origin: "*", credentials: "*" }));
 
 //socket.io
-export const io = new Server(server, { cors: { origin: '*' } });
-
+const io = new Server(server, { cors: { origin: '*' } });
 io.on('connection', (socket) => {
     console.log(socket.id);
     socket.on('join-room', (room) => {
@@ -29,7 +29,8 @@ io.on('connection', (socket) => {
     })
 })
 
-
+//api endpoints
+app.use('/api', routes);
 
 //server starting
 server.listen(process.env.PORT, () => {
