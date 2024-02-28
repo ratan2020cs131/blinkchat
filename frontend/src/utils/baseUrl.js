@@ -1,0 +1,1 @@
+export const BASE_AUTH = 'https://blinkchat-wekq.onrender.com/api/auth';
