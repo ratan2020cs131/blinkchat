@@ -46,7 +46,18 @@ const Login = async (req, res) => {
     }
 }
 
+const Profile = async (req, res) => {
+    try {
+        if (req.user)
+            res.send(req.user);
+    } catch (err) {
+        console.log("Profile error: ", err.message);
+        res.status(500).send({ message: err.message })
+    }
+}
+
 export default {
     Signup,
-    Login
+    Login,
+    Profile
 }
