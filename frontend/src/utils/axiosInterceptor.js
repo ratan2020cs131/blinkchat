@@ -9,3 +9,5 @@ axiosInterceptor.interceptors.request.use((config) => {
     }
     return config;
 })
+
+export default axiosInterceptor;
