@@ -7,7 +7,7 @@ import Login from "@/components/Login";
 export default function Page() {
   const [openLogin, setOpenLogin] = useState(false);
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
+    const token = window.sessionStorage.getItem('token');
     if (token === null) {
       setOpenLogin(true)
     } else {
@@ -19,7 +19,7 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <Home />
-      {openLogin && <Login open={openLogin} setOpen={setOpenLogin} />}
+      <Login open={openLogin} setOpen={setOpenLogin} />
     </main>
   );
 }

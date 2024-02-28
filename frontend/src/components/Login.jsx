@@ -4,6 +4,9 @@ import { Button, Modal, Stack, TextField, Typography } from '@mui/material';
 import TextInput from './StyledInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '@/redux/feature/auth/authSlice';
+import toast, { Toaster } from 'react-hot-toast';
+import { Loader } from '../../assets';
+import Image from 'next/image';
 
 const Login = ({ open, setOpen }) => {
     const handleClose = () => setOpen(false);
@@ -19,8 +22,13 @@ const Login = ({ open, setOpen }) => {
     useEffect(() => {
         console.log(auth);
         if (auth.isAuth) {
-            handleClose();
+            toast.success('Login Successfull', {
+                duration: 16000,
+                position: 'top-center',
+            })
+            var timeout = setTimeout(() => handleClose(), 1600);
         }
+        return () => clearTimeout(timeout)
     }, [auth])
 
     return (
@@ -41,7 +49,7 @@ const Login = ({ open, setOpen }) => {
                 padding: '30px 20px'
             }}
             >
-                <Stack spacing={2}>
+                <Stack spacing={2} sx={{ alignItems: 'center', flexDirection: 'column' }}>
                     <TextInput
                         type='email'
                         label='Email'
@@ -66,19 +74,38 @@ const Login = ({ open, setOpen }) => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Button variant='contained'
-                        onClick={handleSubmit}
-                    >
-                        LOGIN
-                    </Button>
+                    {auth.isLogging &&
+                        <Image src={Loader} alt="...loading" style={{ height: '40px' }} />
+                    }
+                    {!auth.isAuth && !auth.isLogging &&
+                        <Button variant='contained'
+                            onClick={handleSubmit}
+                            sx={{ height: '40px' }}
+                        >
+                            LOGIN
+                        </Button>
+                    }
 
-                    {auth.loginError && <Typography
-                        sx={{
-                            textAlign: 'center',
-                            color: 'tomato'
-                        }}
-                    >{auth.loginError}</Typography>}
+                    {auth.loginError &&
+                        <Stack>
+                            <Typography
+                                sx={{
+                                    textAlign: 'center',
+                                    color: 'tomato'
+                                }}
+                            >{auth.loginError}</Typography>
+                            <Typography
+                                sx={{
+                                    textAlign: 'center',
+                                    fontSize: '13px',
+                                    color: 'tomato'
+                                }}>
+                                Check email and password
+                            </Typography>
+                        </Stack>
+                    }
                 </Stack>
+                <Toaster />
             </Stack>
         </Modal>
     )

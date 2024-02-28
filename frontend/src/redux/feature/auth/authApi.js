@@ -6,7 +6,7 @@ const login = async (data) => {
         console.log('Login api data: ', data);
         const res = await axios.post(`${BASE_AUTH}/login`, data)
         console.log('Login api response: ', res.data);
-        window.localStorage.setItem('token', res.data.token)
+        window.sessionStorage.setItem('token', res.data.token)
         return res.data;
     } catch (error) {
         console.log('Login api error: ', error.message);
