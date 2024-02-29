@@ -14,34 +14,66 @@ export const login = createAsyncThunk(
     }
 )
 
+export const signup = createAsyncThunk(
+    "auth/signup",
+    async (credentials, thunkApi) => {
+        try {
+            const res = await authApi.signup(credentials);
+            if (!res) return thunkApi.rejectWithValue("Signup failed");
+            return res;
+        } catch (error) {
+            return thunkApi.rejectWithValue(error);
+        }
+    }
+)
+
 const state = {
     isLogging: false,
     isAuth: false,
-    loginError: null
+    error: null,
 }
 const authSlice = createSlice({
     name: 'auth',
     initialState: state,
-    reducers: {},
+    reducers: {
+        resetError: (state, action) => {
+            state.error = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state, action) => {
                 state.isLogging = true;
-                state.loginError = null;
+                state.error = null;
                 state.isAuth = false;
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.isLogging = false;
-                state.loginError = null;
+                state.error = null;
                 state.isAuth = true;
             })
             .addCase(login.rejected, (state, action) => {
                 state.isLogging = false;
-                state.loginError = action.payload;
+                state.error = action.payload;
+                state.isAuth = false;
+            })
+            .addCase(signup.pending, (state, action) => {
+                state.isLogging = true;
+                state.error = null;
+                state.isAuth = false;
+            })
+            .addCase(signup.fulfilled, (state, action) => {
+                state.isLogging = false;
+                state.error = null;
+                state.isAuth = true;
+            })
+            .addCase(signup.rejected, (state, action) => {
+                state.isLogging = false;
+                state.error = action.payload;
                 state.isAuth = false;
             })
     }
 })
 
-export const { } = authSlice.actions;
+export const { resetError } = authSlice.actions;
 export default authSlice.reducer;

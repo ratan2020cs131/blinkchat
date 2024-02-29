@@ -13,6 +13,19 @@ const login = async (data) => {
     }
 }
 
+const signup = async (data) => {
+    try {
+        console.log('Signup api data: ', data);
+        const res = await axios.post(`${BASE_AUTH}/signup`, data)
+        console.log('Signup api response: ', res.data);
+        window.sessionStorage.setItem('token', res.data.token)
+        return res.data;
+    } catch (error) {
+        console.log('Signup api error: ', error.message);
+    }
+}
+
 export default {
-    login
+    login,
+    signup
 }
