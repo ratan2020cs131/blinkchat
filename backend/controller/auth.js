@@ -46,7 +46,7 @@ const Login = async (req, res) => {
             }
         }
     } catch (err) {
-        console.log("signup error: ", err.message);
+        console.log("login error: ", err.message);
         res.status(500).send({ message: err.message })
     }
 }
