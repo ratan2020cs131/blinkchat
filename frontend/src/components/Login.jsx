@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, Stack, TextField, Typography } from '@mui/material';
 import TextInput from './StyledInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, resetError } from '@/redux/feature/auth/authSlice';
+import { login, resetError, signup } from '@/redux/feature/auth/authSlice';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from '../../assets';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const Login = ({ open, setOpen }) => {
-    const [signup, setSignup] = useState(false)
+    const [switchSignup, setswitchSignup] = useState(false)
     const handleClose = () => setOpen(false);
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
@@ -20,12 +20,17 @@ const Login = ({ open, setOpen }) => {
 
 
     const handleSinupLogin = (value) => {
-        setSignup(value);
+        setswitchSignup(value);
         dispatch(resetError())
     }
     const handleSubmit = async () => {
-        if (email && password)
-            dispatch(login({ email, password }))
+        if (switchSignup) {
+            if (email && password && name)
+                dispatch(signup({ name, email, password }))
+        } else {
+            if (email && password)
+                dispatch(login({ email, password }))
+        }
     }
     useEffect(() => {
         console.log(auth);
@@ -50,7 +55,7 @@ const Login = ({ open, setOpen }) => {
                 backdropFilter: 'blur(10px)',
             }}
         >
-            {signup ?
+            {switchSignup ?
                 <Stack sx={{
                     backgroundColor: '#fff', padding: '10px',
                     borderRadius: '7px',
