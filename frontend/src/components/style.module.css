@@ -6,7 +6,7 @@
     border-radius: 50px;
     border: 1px solid #a0a0a0;
     background: transparent;
-    color: #fff;
+    color: #000;
     height: 33px;
     padding: 0 30px;
     padding-top:10px ;
@@ -24,28 +24,23 @@
 }
 
 .conversation {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 100%;
     height: 100%;
     padding: 0 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
 }
 
 .conversation::-webkit-scrollbar {
     width: 7px;
-    /* width of the scrollbar */
 }
 
 .conversation::-webkit-scrollbar-thumb {
-    background-color: #a0a0a0;
-    /* color of the scrollbar thumb */
+    background-color: #000;
     border-radius: 6px;
-    /* roundness of the scrollbar thumb */
 }
 
 .conversation::-webkit-scrollbar-track {
-    background-color: #000;
-    /* color of the scrollbar track */
+    background-color: transparent;
 }

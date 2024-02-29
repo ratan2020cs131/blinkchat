@@ -29,6 +29,9 @@ const profile = async () => {
     try {
         const res = await axios.get(`${BASE_AUTH}/profile`)
         console.log('Profile api response: ', res.data);
+        window.sessionStorage.setItem('id', res.data.id)
+        window.sessionStorage.setItem('name', res.data.name)
+        window.sessionStorage.setItem('email', res.data.email)
         return res.data;
     } catch (error) {
         console.log('Profile api error: ', error.message);
