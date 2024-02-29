@@ -23,9 +23,9 @@ io.on('connection', (socket) => {
     socket.on('join-room', (room) => {
         socket.join(room)
     })
-    socket.on('send-message', (message, room) => {
+    socket.on('send-message', (message, id, name, room) => {
         console.log(message, room);
-        socket.to(room).emit('recieve-message', message, socket.id)
+        socket.to(room).emit('recieve-message', message, id, name)
     })
 })
 

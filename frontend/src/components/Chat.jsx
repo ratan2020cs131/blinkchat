@@ -9,6 +9,7 @@ import { Plane } from '../../assets';
 import { io } from 'socket.io-client';
 const socket = io('https://blinkchat-wekq.onrender.com');
 
+
 const Chat = () => {
     const sendRef = useRef(null)
     const auth = useSelector(state => state.auth);
@@ -17,11 +18,14 @@ const Chat = () => {
     const [chats, setChats] = useState([]);
     const [message, setMessage] = useState('');
     const [id, setId] = useState(null);
+    const [name, setName] = useState(null);
 
     useEffect(() => {
         const id = window.sessionStorage.getItem('id');
+        const name = window.sessionStorage.getItem('name');
         if (id) {
             setId(id);
+            setName(name);
         } else {
             router.push('/');
         }
@@ -36,9 +40,9 @@ const Chat = () => {
         setRoom(url.split('/').pop());
         socket.emit('join-room', url.split('/').pop());
 
-        socket.on('recieve-message', (message, id) => {
+        socket.on('recieve-message', (message, id, name) => {
             console.log("received: ", message);
-            setChats(prev => [...prev, { id: id, message }]);
+            setChats(prev => [...prev, { id, name, message }]);
         });
 
         return () => {
@@ -50,8 +54,8 @@ const Chat = () => {
     const sendMessage = () => {
         if (message !== '') {
             console.log("send: ", message);
-            socket.emit('send-message', message, room);
-            setChats(prev => [...prev, { id: id, message }]);
+            socket.emit('send-message', message, id, name, room);
+            setChats(prev => [...prev, { id, name, message }]);
         }
         setMessage('');
     };
@@ -98,51 +102,76 @@ export default Chat;
 
 
 const Converstation = ({ chats, id }) => {
+
+    useEffect(() => {
+        function scrollToBottom() {
+            var chatContainer = document.querySelector("#container");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Scroll to bottom initially
+        scrollToBottom();
+    }, [chats])
+
     return (
-        <Box spacing={1} className={`${styles.conversation}`} style={{}}>
-            {chats.map((item, index) => (
-                <>
-                    {item.id !== id && <Typography sx={{ fontSize: '9px', marginBottom: '-6px', marginLeft: '3px' }}>Name</Typography>}
-                    <Typography
-                        key={index}
-                        className={`${styles.fontFamily}`}
-                        sx={{
-                            background: item.id !== id ? '#a0a0a0' : 'yellowgreen',
-                            borderRadius: '10px',
-                            padding: '10px',
-                            width: 'fit-content',
-                            maxWidth: '70%',
-                            alignSelf: item.id !== id ? 'flex-start' : 'flex-end',
-                            wordBreak: 'break-all',
-                            margin: '5px 0'
+        <div
+            style={{
+                height: "90vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+            }}
+        >
+            <div
+                className={`${styles.conversation}`}
+                id="container"
+                style={{
+                    maxHeight: "90vh",
+                    height: "auto",
+                    overflowY: "auto",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: 0,
+                    flexWrap: "wrap",
+                }}
+            >
+                {chats.map((item, index) => (
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: item.id !== id ? "flex-start" : "flex-end",
+                            width: "100%",
+                            flexShrink: 0,
+                            margin: 0,
                         }}
                     >
-                        {item.message.split('\n').map((line, index) => (
-                            <React.Fragment key={index}>
-                                {line}
-                                <br />
-                            </React.Fragment>
-                        ))}
-                        {/* {item.message} */}
-                    </Typography>
-                </>
-            ))}
-        </Box>
-        // <Stack sx={{
-        //     width: '100%', height: '100%', background: 'green',
-        //     overflowY: 'auto',
-        // }}>
-        //     {
-        //         Array(8).fill(1).map((item, index) => (
-        //             <Typography
-        //                 sx={{
-        //                     marginLeft: index % 2 === 0 && 'auto',
-        //                     marginRight: index % 2 !== 0 && 'auto'
-        //                 }}
-        //             >{"ndiidm" + index}</Typography>
-        //         ))
-        //     }
-        // </Stack>
+                        {item.id !== id && <Typography sx={{ fontSize: '9px', marginBottom: '-6px', marginLeft: '3px' }}>{item.name}</Typography>}
+                        <Typography
+                            key={index}
+                            className={`${styles.fontFamily}`}
+                            sx={{
+                                background: item.id !== id ? '#a0a0a0' : 'yellowgreen',
+                                borderRadius: '10px',
+                                padding: '10px',
+                                width: 'fit-content',
+                                maxWidth: '70%',
+                                // t: item.id !== id ? 'flex-start' : 'flex-end',
+                                wordBreak: 'break-all',
+                                margin: '5px 0'
+                            }}
+                        >
+                            {item.message.split('\n').map((line, index) => (
+                                <React.Fragment key={index}>
+                                    {line}
+                                    <br />
+                                </React.Fragment>
+                            ))}
+                        </Typography>
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

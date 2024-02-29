@@ -24,20 +24,18 @@
 }
 
 .conversation {
-    overflow-y: auto;
-    width: 100%;
-    height: 100%;
-    padding: 0 10px;
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    padding: 0 20px;
 }
 
 .conversation::-webkit-scrollbar {
+    position: absolute;
+    right:0;
     width: 7px;
 }
 
 .conversation::-webkit-scrollbar-thumb {
-    background-color: #000;
+    background-color: #606060;
     border-radius: 6px;
 }
 
