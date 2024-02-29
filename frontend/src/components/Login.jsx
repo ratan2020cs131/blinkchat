@@ -33,7 +33,6 @@ const Login = ({ open, setOpen }) => {
         }
     }
     useEffect(() => {
-        console.log(auth);
         if (auth.isAuth) {
             toast.success('Login Successfull', {
                 duration: 16000,

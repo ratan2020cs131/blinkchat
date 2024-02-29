@@ -25,7 +25,18 @@ const signup = async (data) => {
     }
 }
 
+const profile = async () => {
+    try {
+        const res = await axios.get(`${BASE_AUTH}/profile`)
+        console.log('Profile api response: ', res.data);
+        return res.data;
+    } catch (error) {
+        console.log('Profile api error: ', error.message);
+    }
+}
+
 export default {
     login,
-    signup
+    signup,
+    profile
 }

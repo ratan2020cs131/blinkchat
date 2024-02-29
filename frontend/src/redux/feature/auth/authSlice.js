@@ -27,10 +27,26 @@ export const signup = createAsyncThunk(
     }
 )
 
+export const profile = createAsyncThunk(
+    "auth/profile",
+    async (thunkApi) => {
+        try {
+            const res = await authApi.profile();
+            if (!res) return thunkApi.rejectWithValue();
+            return res;
+        } catch (error) {
+            return thunkApi.rejectWithValue(error);
+        }
+    }
+)
+
 const state = {
     isLogging: false,
     isAuth: false,
     error: null,
+    user: null,
+    tokenInvalid: false,
+    verifyingToken: true
 }
 const authSlice = createSlice({
     name: 'auth',
@@ -71,6 +87,27 @@ const authSlice = createSlice({
                 state.isLogging = false;
                 state.error = action.payload;
                 state.isAuth = false;
+            })
+            .addCase(profile.pending, (state, action) => {
+                state.verifyingToken = true;
+                state.error = null;
+                state.isAuth = false;
+                state.user = null;
+                state.tokenInvalid = false
+            })
+            .addCase(profile.fulfilled, (state, action) => {
+                state.verifyingToken = false;
+                state.error = null;
+                state.isAuth = true;
+                state.user = action.payload;
+                state.tokenInvalid = true;
+            })
+            .addCase(profile.rejected, (state, action) => {
+                state.verifyingToken = false;
+                state.error = action.payload;
+                state.isAuth = false;
+                state.user = null;
+                state.tokenInvalid = true
             })
     }
 })
