@@ -13,7 +13,12 @@ const Signup = async (req, res) => {
             } else {
                 const id = generateUiid();
                 const { rows } = await Pool.query(UserQuery.insertNewUser, [id, name, email, password])
-                res.json(rows[0]);
+                if (rows.length > 0) {
+                    const token = generateToken(rows[0].id);
+                    res.json({ token });
+                } else {
+                    res.status(400).send({ message: "Something went wrong" })
+                }
             }
         } else {
             res.status(401).send({ message: "provide name, password, email correctly" })
