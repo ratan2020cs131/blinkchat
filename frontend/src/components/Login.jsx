@@ -36,7 +36,7 @@ const Login = ({ open, setOpen }) => {
         if (auth.isAuth) {
             toast.success('Login Successfull', {
                 duration: 16000,
-                position: 'top-center',
+                position: 'bottom-center',
             })
             var timeout = setTimeout(() => handleClose(), 1600);
         }
