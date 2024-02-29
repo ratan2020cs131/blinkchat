@@ -67,10 +67,10 @@ const Chat = () => {
 
 
     return (
-        <Stack sx={{height: '100%', justifyContent: 'flex-end', alignItems:'center'}} spacing={2}>
+        <Stack sx={{ height: '100%', justifyContent: 'flex-end', alignItems: 'center' }} spacing={2}>
             <Converstation chats={chats} id={id} />
 
-            <Stack sx={{ position: 'relative', justifyContent: 'center', paddingBottom:'10px', width:'99%'}}>
+            <Stack sx={{ position: 'relative', justifyContent: 'center', paddingBottom: '10px', width: '99%', height: '10%' }}>
                 <textarea
                     className={`${styles.input} ${styles.fontFamily}`}
                     type="text"
@@ -117,8 +117,8 @@ const Converstation = ({ chats, id }) => {
     return (
         <div
             style={{
-                width:'100%',
-                height: "90vh",
+                width: '100%',
+                height: "89%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
@@ -128,10 +128,10 @@ const Converstation = ({ chats, id }) => {
                 className={`${styles.conversation}`}
                 id="container"
                 style={{
-                    maxHeight: "90vh",
+                    maxHeight: "100%",
                     height: "auto",
                     overflowY: "auto",
-                    padding:'0 10px',
+                    padding: '0 10px',
                     display: "flex",
                     alignItems: "flex-end",
                     gap: 0,
