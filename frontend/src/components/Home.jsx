@@ -28,17 +28,17 @@ const Home = ({ name }) => {
                     <Typography sx={{ textWrap: 'wrap', textAlign: 'center', fontSize: '25px', color: '#4CBB17', fontWeight: 700 }}>Welcome! {name}</Typography>
                     <Button
                         variant={'contained'}
-                        sx={{ width: '100px', fontWeight: 700 }}
+                        sx={{ width: '160px', fontWeight: 700 }}
                         onClick={handleOpen}
                     >
-                        Join
+                        Join a room
                     </Button>
 
                     <Button
-                        sx={{ width: '100px' }}
+                        sx={{ width: '160px' }}
                         onClick={createRoom}
                     >
-                        Create
+                        Create a Room
                     </Button>
                     {openModal && <RoomIdModal close={handleClose} open={openModal} />}
                 </>

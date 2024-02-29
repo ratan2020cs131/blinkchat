@@ -193,7 +193,7 @@ const Login = ({ open, setOpen }) => {
                                 </Typography>
                             </Stack>
                         }
-                        <Typography sx={{ fontSize: '14px' }}>Don't have an account?{" "}
+                        <Typography sx={{ fontSize: '14px' }}>{"Don't have an account? "}
                             <Link href="#"
                                 style={{ color: '#1976d2' }}
                                 onClick={() => handleSinupLogin(true)}
