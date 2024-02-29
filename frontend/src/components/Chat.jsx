@@ -137,6 +137,7 @@ const Converstation = ({ chats, id }) => {
             >
                 {chats.map((item, index) => (
                     <div
+                        key={index}
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -148,7 +149,6 @@ const Converstation = ({ chats, id }) => {
                     >
                         {item.id !== id && <Typography sx={{ fontSize: '9px', marginBottom: '-6px', marginLeft: '3px' }}>{item.name}</Typography>}
                         <Typography
-                            key={index}
                             className={`${styles.fontFamily}`}
                             sx={{
                                 background: item.id !== id ? '#a0a0a0' : 'yellowgreen',
