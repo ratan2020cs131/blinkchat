@@ -7,7 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { Plane } from '../../assets';
 import { io } from 'socket.io-client';
-const socket = io('https://blinkchat-wekq.onrender.com');
+// const socket = io('https://blinkchat-wekq.onrender.com');
+const socket = io('http://localhost:5000');
+
 
 
 const Chat = () => {
@@ -38,7 +40,7 @@ const Chat = () => {
 
         const url = window.location.href;
         setRoom(url.split('/').pop());
-        socket.emit('join-room', url.split('/').pop());
+        socket.emit('join-room', url.split('/').pop(), window.sessionStorage.getItem('name'), window.sessionStorage.getItem('id'));
 
         socket.on('recieve-message', (message, id, name) => {
             console.log("received: ", message);
@@ -70,7 +72,7 @@ const Chat = () => {
         <Stack sx={{ height: '100%', justifyContent: 'flex-end', alignItems: 'center' }} spacing={2}>
             <Converstation chats={chats} id={id} />
 
-            <Stack sx={{ position: 'relative', justifyContent: 'center', paddingBottom: '10px', width: '99%', height: '10%' }}>
+            <Stack sx={{ position: 'relative', justifyContent: 'center', padding: '10px 0', width: '100%' }}>
                 <textarea
                     className={`${styles.input} ${styles.fontFamily}`}
                     type="text"
@@ -150,27 +152,38 @@ const Converstation = ({ chats, id }) => {
                             margin: 0,
                         }}
                     >
-                        {item.id !== id && <Typography sx={{ fontSize: '9px', marginBottom: '-6px', marginLeft: '3px' }}>{item.name}</Typography>}
-                        <Typography
-                            className={`${styles.fontFamily}`}
-                            sx={{
-                                background: item.id !== id ? '#a0a0a0' : 'yellowgreen',
-                                borderRadius: '10px',
-                                padding: '10px',
-                                width: 'fit-content',
-                                maxWidth: '70%',
-                                // t: item.id !== id ? 'flex-start' : 'flex-end',
-                                wordBreak: 'break-all',
-                                margin: '5px 0'
-                            }}
-                        >
-                            {item.message.split('\n').map((line, index) => (
-                                <React.Fragment key={index}>
-                                    {line}
-                                    <br />
-                                </React.Fragment>
-                            ))}
-                        </Typography>
+                        {item.id !== id &&
+                            item.message === '' &&
+                            <Stack sx={{ width: '100%', margin:'20px 0', position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
+                                <Typography sx={{ position: 'absolute', width: '100%', zIndex: 0, borderBottom: '1px dashed #606060' }}></Typography>
+                                <Typography sx={{ textAlign: 'center', fontSize: '14px', backgroundColor: '#909090', zIndex: 1, width: 'fit-content', padding: '0 10px' }}>{item.name} joined room</Typography>
+                            </Stack>
+                        }
+                        {item.message !== '' &&
+                            <>
+                                {item.id !== id && <Typography sx={{ fontSize: '9px', marginBottom: '-6px', marginLeft: '3px' }}>{item.name}</Typography>}
+                                <Typography
+                                    className={`${styles.fontFamily}`}
+                                    sx={{
+                                        background: item.id !== id ? '#a0a0a0' : 'yellowgreen',
+                                        borderRadius: '10px',
+                                        padding: '10px',
+                                        width: 'fit-content',
+                                        maxWidth: '70%',
+                                        // t: item.id !== id ? 'flex-start' : 'flex-end',
+                                        wordBreak: 'break-all',
+                                        margin: '5px 0'
+                                    }}
+                                >
+                                    {item.message.split('\n').map((line, index) => (
+                                        <React.Fragment key={index}>
+                                            {line}
+                                            <br />
+                                        </React.Fragment>
+                                    ))}
+                                </Typography>
+                            </>
+                        }
                     </div>
                 ))}
             </div>

@@ -20,8 +20,11 @@ app.use(cors({ origin: "*", credentials: "*" }));
 const io = new Server(server, { cors: { origin: '*' } });
 io.on('connection', (socket) => {
     console.log(socket.id);
-    socket.on('join-room', (room) => {
+    socket.on('join-room', (room, name, id) => {
         socket.join(room)
+        console.log(name);
+        let message = '';
+        socket.to(room).emit('recieve-message', message, id, name)
     })
     socket.on('send-message', (message, id, name, room) => {
         console.log(message, room);
